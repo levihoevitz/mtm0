@@ -5,6 +5,7 @@
 #include "product.h"
 #include "string.h"
 #include "stdlib.h"
+#include "matamikya_print.h"
 
 struct product_t {
 	char* name;
@@ -18,19 +19,25 @@ struct product_t {
 };
 
 
-void* copyProduct(void* product)
+void* copyProduct(void* element)
 {
-	if (product == NULL) {
+	if (element == NULL) {
 		return NULL;
 	}
-	Product new_product = creatProduct(((Product) product)->name,
-									   ((Product) product)->productId,
-									   ((Product) product)->amountType,
-									   ((Product) product)->productData,
-									   ((Product) product)->copyData,
-									   ((Product) product)->freeData,
-									   ((Product) product)->getProductPrice);
+	Product product = element;
+	Product new_product = creatProduct(product->name,
+									   product->productId,
+									   product->amountType,
+									   product->productData,
+									   product->copyData,
+									   product->freeData,
+									   product->getProductPrice);
 	if (new_product == NULL) {
+		return NULL;
+	}
+	new_product->productData = copyProduct(product->productData);
+	if (new_product->productData == NULL) {
+		freeProduct(new_product);
 		return NULL;
 	}
 	return new_product;
@@ -86,5 +93,20 @@ Product creatProduct(const char* name,
 }
 
 
+bool compareProductID(Product prod, int id)
+{
+	if (prod->productId == id) {
+		return true;
+	}
+	return false;
+}
 
+void printProductDetails(Product product, FILE* output)
+{
+	mtmPrintProductDetails(product->name, product->productId,)
+}
 
+void getProductName(Product product)
+{
+
+}

@@ -4,6 +4,7 @@
 
 #ifndef MTM0_PRODUCT_H
 #define MTM0_PRODUCT_H
+#include "stdbool.h"
 typedef struct product_t* Product;
 
 typedef void* MtmProductData;
@@ -63,5 +64,5 @@ void freeProduct(void* product);
 
 int compareProduct(void* first_product, void* second_product);
 
-
+bool compareProductID(Product prod, int id);
 #endif //MTM0_PRODUCT_H

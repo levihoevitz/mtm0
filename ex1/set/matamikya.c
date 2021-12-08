@@ -183,13 +183,22 @@ static bool isTheAmountLegal(const double amount)
 	return true;
 }
 
-static Product getProduct(AmountSet products, int id)
+static Product getProductWithID(AmountSet products, int id)
 {
-	AS_FOREACH(Product, iterator, products) {
-		if (products->iterator->id == id) {
-			return iterator;
+	for (Product prod = asGetFirst(products); prod != NULL; prod = asGetNext(products)) {
+		if (compareProductID(prod, id)) {
+			return prod;
 		}
+	}
+	return NULL;
+}
 
+static Order getOrderWithID(Set orders, int id)
+{
+	for (Order ord = setGetFirst(orders); ord != NULL; ord = setGetNext(orders)) {
+		if (compareOrderID(ord, id)) {
+			return ord;
+		}
 	}
 	return NULL;
 }
@@ -205,12 +214,17 @@ MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int i
 	if (!isTheAmountLegal(amount)) {
 		return MATAMIKYA_INSUFFICIENT_AMOUNT;
 	}
-	Product prod = getProduct(matamikya->Products, id);
+	Product prod = getProductWithID(matamikya->Products, id);
 	if (prod == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
 
 	return MATAMIKYA_SUCCESS;
+}
+
+static void removeProductFromId(Set orders, unsigned int id)
+{
+
 }
 
 /**
@@ -235,11 +249,12 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (!asContains(matamikya->Products, &id)) {
+	Product prod = getProductWithID(matamikya->Products, id);
+	if (prod == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
-	///how can i get the specific product?
-
+	freeProduct(prod);
+	removeProductFromId(matamikya->orders, id);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -264,8 +279,7 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya)
 	if (setAdd(matamikya->orders, new_order) != SET_SUCCESS) {
 		return 0;
 	}
-	///how can i knew what is the id
-	return 1;
+	return getOrderID(new_order);
 }
 
 /**
@@ -303,16 +317,18 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (!setIsIn(matamikya->orders, &orderId)) {
+	Order order= getOrderWithID(matamikya->orders, orderId);
+	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-	if (!asContains(matamikya->Products, &productId)) {
+	if (!asContains(matamikya->Products, getProductWithID(matamikya->Products,productId))) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
 	if (!isTheAmountTypeLegal(amount)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
-///how can i get the specific order and product?
+	changeAmountOfProductInOrder(order,productId,amount);
+	///complete
 
 	return MATAMIKYA_SUCCESS;
 }
@@ -345,14 +361,17 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (!setIsIn(matamikya->orders, &orderId)) {
+
+	Order order= getOrderWithID(matamikya->orders, orderId);
+	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-	///to find the product by the name
-	if (!isTheAmountLegal(amount)) {
+
+	if (!IsTheAmountExists(order)) {
 		return MATAMIKYA_INSUFFICIENT_AMOUNT;
 	}
-	///change the ship status
+	CalculatesTheProfits(order);
+	changeStatusOrderToSent(order);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -375,10 +394,11 @@ MatamikyaResult mtmCancelOrder(Matamikya matamikya, const unsigned int orderId)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (orderId) {
+	Order order= getOrderWithID(matamikya->orders, orderId);
+	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-
+	setRemove(matamikya->orders,order);
 	return MATAMIKYA_SUCCESS;
 }
 
