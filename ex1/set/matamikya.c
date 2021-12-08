@@ -4,19 +4,13 @@
 #include "product.h"
 #include "string.h"
 #include "amount_set.h"
+#include "orders.h"
 
 struct Matamikya_t {
 	AmountSet Products;
 	Set orders;
 };
 
-
-struct order_t {
-	unsigned int id;
-	char* name;
-	double amount;
-	//להוסיף רווח
-};
 
 /**
  * matamikyaCreate: create an empty Matamikya warehouse.
@@ -106,7 +100,7 @@ static bool isTheNameLegal(const char* name)
 	return true;
 }
 
-static bool isTheAmountLegal(const double amount)
+static bool isTheAmountTypeLegal(const double amount)
 {
 	if (amount < 0) {
 		return false;
@@ -127,23 +121,26 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
 	if (!isTheNameLegal(name)) {
 		return MATAMIKYA_INVALID_NAME;
 	}
-	if (!isTheAmountLegal(amount)) {
+	if (!isTheAmountTypeLegal(amount)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
 	///check it
-	if (asContains(matamikya->Products, &id)) {
+
+
+	Product new_product = creatProduct(name, id, amountType,
+									   customData, copyData, freeData, prodPrice);
+	if (new_product == NULL) {
+		return MATAMIKYA_OUT_OF_MEMORY;
+	}
+	if (asContains(matamikya->Products, new_product)) {
+		///free new product
 		return MATAMIKYA_PRODUCT_ALREADY_EXIST;
 	}
-
-	Product new_product = creatProduct(name, id, amountType, amount,
-									   customData, copyData, freeData, prodPrice);
-	if(new_product==NULL){
+	if (asRegister(matamikya->Products, new_product) != AS_SUCCESS) {
+		///free new product
 		return MATAMIKYA_OUT_OF_MEMORY;
 	}
-	if(asRegister(matamikya->Products,new_product)!=AS_SUCCESS){
-		free(new_product);
-		return MATAMIKYA_OUT_OF_MEMORY;
-	}
+	///free new product
 	free(new_product);
 	return MATAMIKYA_SUCCESS;
 }
@@ -177,18 +174,39 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
  *    error code is returned if one of the parameters is invalid, and MATAMIKYA_SUCCESS
  *    is returned if all the parameters are valid.
  */
+static bool isTheAmountLegal(const double amount)
+{
+	if (amount < 0) {
+		return false;
+	}
+	///check type
+	return true;
+}
+
+static Product getProduct(AmountSet products, int id)
+{
+	AS_FOREACH(Product, iterator, products) {
+		if (products->iterator->id == id) {
+			return iterator;
+		}
+
+	}
+	return NULL;
+}
+
 MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int id, const double amount)
 {
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (amount) {
-		return MATAMIKYA_INSUFFICIENT_AMOUNT;
-	}
-	if (amount) {
+	if (!isTheAmountTypeLegal(amount)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
-	if (id) {
+	if (!isTheAmountLegal(amount)) {
+		return MATAMIKYA_INSUFFICIENT_AMOUNT;
+	}
+	Product prod = getProduct(matamikya->Products, id);
+	if (prod == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
 
@@ -217,10 +235,10 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-
-	if (id) {
+	if (!asContains(matamikya->Products, &id)) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
+	///how can i get the specific product?
 
 	return MATAMIKYA_SUCCESS;
 }
@@ -239,6 +257,14 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya)
 	if (matamikya == NULL) {
 		return 0;
 	}
+	Order new_order = malloc(sizeof(new_order));
+	if (new_order == NULL) {
+		return 0;
+	}
+	if (setAdd(matamikya->orders, new_order) != SET_SUCCESS) {
+		return 0;
+	}
+	///how can i knew what is the id
 	return 1;
 }
 
@@ -277,16 +303,16 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (orderId) {
+	if (!setIsIn(matamikya->orders, &orderId)) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-	if (productId) {
+	if (!asContains(matamikya->Products, &productId)) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
-	if (amount) {
+	if (!isTheAmountTypeLegal(amount)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
-
+///how can i get the specific order and product?
 
 	return MATAMIKYA_SUCCESS;
 }
@@ -319,12 +345,14 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (orderId) {
+	if (!setIsIn(matamikya->orders, &orderId)) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-	if (1) {
+	///to find the product by the name
+	if (!isTheAmountLegal(amount)) {
 		return MATAMIKYA_INSUFFICIENT_AMOUNT;
 	}
+	///change the ship status
 	return MATAMIKYA_SUCCESS;
 }
 

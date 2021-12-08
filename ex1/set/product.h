@@ -52,7 +52,6 @@ typedef double (* MtmGetProductPrice)(MtmProductData, const double amount);
 Product creatProduct(const char* name,
 					 unsigned int productId,
 					 MatamikyaAmountType amountType,
-					 double amount,
 					 MtmProductData productData,
 					 MtmCopyData copyData,
 					 MtmFreeData freeData,
