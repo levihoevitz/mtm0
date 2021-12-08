@@ -18,6 +18,7 @@ struct product_t {
 
 };
 
+char* ibibbkbjhvgevucfwerhifhi
 
 void* copyProduct(void* element)
 {
