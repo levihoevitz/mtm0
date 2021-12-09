@@ -5,9 +5,10 @@
 #include "string.h"
 #include "amount_set.h"
 #include "orders.h"
+#include "matamikya_print.h"
 
 struct Matamikya_t {
-	AmountSet Products;
+	Set Products;
 	Set orders;
 };
 
@@ -24,22 +25,24 @@ Matamikya matamikyaCreate()
 	if (new_matamikya == NULL) {
 		return NULL;
 	}
-	new_matamikya->Products = asCreate(copyProduct,
-									   freeProduct,
-									   compareProduct);
+
+	new_matamikya->Products = setCreate(copyProduct,
+										freeProduct,
+										compareProduct);
 	if (new_matamikya->Products == NULL) {
 		free(new_matamikya);
 		return NULL;
 	}
-	///to change function
-	new_matamikya->orders = setCreate(copyProduct,
-									  freeProduct,
-									  compareProduct);
+
+	new_matamikya->orders = setCreate(copyOrder,
+									  freeOrder,
+									  compareOrder);
 	if (new_matamikya->Products == NULL) {
 		setDestroy(new_matamikya->orders);
 		free(new_matamikya);
 		return NULL;
 	}
+
 	return new_matamikya;
 }
 
@@ -55,7 +58,7 @@ void matamikyaDestroy(Matamikya matamikya)
 	if (matamikya == NULL) {
 		return;
 	}
-	asDestroy(matamikya->Products);
+	setDestroy(matamikya->Products);
 	setDestroy(matamikya->orders);
 	free(matamikya);
 }
@@ -124,24 +127,22 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
 	if (!isTheAmountTypeLegal(amount)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
-	///check it
 
-
-	Product new_product = creatProduct(name, id, amountType,
+	Product new_product = creatProduct(name, id, amount, amountType,
 									   customData, copyData, freeData, prodPrice);
 	if (new_product == NULL) {
 		return MATAMIKYA_OUT_OF_MEMORY;
 	}
-	if (asContains(matamikya->Products, new_product)) {
-		///free new product
+	if (setIsIn(matamikya->Products, new_product)) {
+		freeProduct(new_product);
 		return MATAMIKYA_PRODUCT_ALREADY_EXIST;
 	}
-	if (asRegister(matamikya->Products, new_product) != AS_SUCCESS) {
-		///free new product
+	if (setAdd(matamikya->Products, new_product) != SET_SUCCESS) {
+		freeProduct(new_product);
 		return MATAMIKYA_OUT_OF_MEMORY;
 	}
-	///free new product
-	free(new_product);
+
+	freeProduct(new_product);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -183,9 +184,9 @@ static bool isTheAmountLegal(const double amount)
 	return true;
 }
 
-static Product getProductWithID(AmountSet products, int id)
+static Product getProductWithID(Set products, unsigned int id)
 {
-	for (Product prod = asGetFirst(products); prod != NULL; prod = asGetNext(products)) {
+	for (Product prod = setGetFirst(products); prod != NULL; prod = setGetNext(products)) {
 		if (compareProductID(prod, id)) {
 			return prod;
 		}
@@ -193,7 +194,7 @@ static Product getProductWithID(AmountSet products, int id)
 	return NULL;
 }
 
-static Order getOrderWithID(Set orders, int id)
+static Order getOrderWithID(Set orders, unsigned int id)
 {
 	for (Order ord = setGetFirst(orders); ord != NULL; ord = setGetNext(orders)) {
 		if (compareOrderID(ord, id)) {
@@ -214,15 +215,16 @@ MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int i
 	if (!isTheAmountLegal(amount)) {
 		return MATAMIKYA_INSUFFICIENT_AMOUNT;
 	}
-	Product prod = getProductWithID(matamikya->Products, id);
-	if (prod == NULL) {
+	Product product = getProductWithID(matamikya->Products, id);
+	if (product == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
 
+	setProductAmount(product, amount);
 	return MATAMIKYA_SUCCESS;
 }
 
-static void removeProductFromId(Set orders, unsigned int id)
+static void removeProductFromOrderByID(Set orders, unsigned int id)
 {
 
 }
@@ -249,12 +251,12 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	Product prod = getProductWithID(matamikya->Products, id);
-	if (prod == NULL) {
+	Product product = getProductWithID(matamikya->Products, id);
+	if (product == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
-	freeProduct(prod);
-	removeProductFromId(matamikya->orders, id);
+	freeProduct(product);
+	removeProductFromOrderByID(matamikya->orders, id);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -267,6 +269,12 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id)
  *     Positive productId of the new order, if successful.
  *     0 in case of failure.
  */
+
+static unsigned int getMaxOrderID(Set orders)
+{
+
+}
+
 unsigned int mtmCreateNewOrder(Matamikya matamikya)
 {
 	if (matamikya == NULL) {
@@ -275,6 +283,11 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya)
 	Order new_order = malloc(sizeof(new_order));
 	if (new_order == NULL) {
 		return 0;
+	}
+	if (matamikya->orders == NULL) {
+		setOrderID(new_order, 1);
+	} else {
+		setOrderID(new_order, getMaxOrderID(matamikya->orders) + 1);
 	}
 	if (setAdd(matamikya->orders, new_order) != SET_SUCCESS) {
 		return 0;
@@ -317,19 +330,31 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	Order order= getOrderWithID(matamikya->orders, orderId);
-	if (order == NULL) {
-		return MATAMIKYA_ORDER_NOT_EXIST;
-	}
-	if (!asContains(matamikya->Products, getProductWithID(matamikya->Products,productId))) {
+
+	if (getProductWithID(matamikya->Products, productId) == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
 	if (!isTheAmountTypeLegal(amount)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
-	changeAmountOfProductInOrder(order,productId,amount);
-	///complete
 
+	Order order = getOrderWithID(matamikya->orders, orderId);
+	if (order == NULL) {
+		return MATAMIKYA_ORDER_NOT_EXIST;
+	}
+
+	Product product = getProductWithID(getOrderProducts(order), productId);
+	if (product == NULL && amount > 0) {
+		addOrderProduct(order, productId);
+		return MATAMIKYA_SUCCESS;
+	}
+
+	if (getProductAmount(product) + amount <= 0) {
+		removeOrderProduct(order, productId);
+		return MATAMIKYA_SUCCESS;
+	}
+
+	setProductAmount(product, amount);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -362,7 +387,7 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
 
-	Order order= getOrderWithID(matamikya->orders, orderId);
+	Order order = getOrderWithID(matamikya->orders, orderId);
 	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
@@ -370,7 +395,7 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 	if (!IsTheAmountExists(order)) {
 		return MATAMIKYA_INSUFFICIENT_AMOUNT;
 	}
-	CalculatesTheProfits(order);
+	CalculatesAndSetTheProfits(order);
 	changeStatusOrderToSent(order);
 	return MATAMIKYA_SUCCESS;
 }
@@ -394,11 +419,11 @@ MatamikyaResult mtmCancelOrder(Matamikya matamikya, const unsigned int orderId)
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	Order order= getOrderWithID(matamikya->orders, orderId);
+	Order order = getOrderWithID(matamikya->orders, orderId);
 	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-	setRemove(matamikya->orders,order);
+	setRemove(matamikya->orders, order);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -412,14 +437,28 @@ MatamikyaResult mtmCancelOrder(Matamikya matamikya, const unsigned int orderId)
  *     MATAMIKYA_NULL_ARGUMENT - if a NULL argument is passed.
  *     MATAMIKYA_SUCCESS - if printed successfully.
  */
+
+static Product getFirstSmallProduct(Set products)
+{
+}
+
+static Product getNextSmallProduct(Set products, unsigned int productID)
+{
+}
+
 MatamikyaResult mtmPrintInventory(Matamikya matamikya, FILE* output)
 {
 	if (matamikya == NULL || output == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-
+	for (Product product = getFirstSmallProduct(matamikya->Products); product != NULL;
+		 product = getNextSmallProduct(matamikya->Products, getProductID(product))) {
+		mtmPrintProductDetails(getProductName(product), getProductID(product),
+							   getProductAmount(product), getProductPrice(product), output);
+	}
 	return MATAMIKYA_SUCCESS;
 }
+
 
 /**
  * matamikyaPrintOrder: print a summary of an order from a Matamikya warehouse,
@@ -441,10 +480,19 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
 	if (matamikya == NULL || output == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (orderId) {
+	Order order = getOrderWithID(matamikya->orders, orderId);
+	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
-
+	mtmPrintOrderHeading(orderId, output);
+	///to change to product of order
+	for (Product product = getFirstSmallProduct(getOrderProducts(order));
+		 product != NULL; product = getNextSmallProduct(getOrderProducts(order),
+														getProductID(product))) {
+		mtmPrintProductDetails(getProductName(product), getProductID(product),
+							   getProductAmount(product), getProductPrice(product) * getProductAmount(product), output);
+	}
+	mtmPrintOrderSummary(getOrderTotalProfit(order), output);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -458,12 +506,28 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
  *     MATAMIKYA_NULL_ARGUMENT - if a NULL argument is passed.
  *     MATAMIKYA_SUCCESS - if printed successfully.
  */
+
+static double maximumInCome(Set products)
+{
+
+}
+
 MatamikyaResult mtmPrintBestSelling(Matamikya matamikya, FILE* output)
 {
-	if (matamikya == NULL || output == NULL) {
+	if (matamikya == NULL || matamikya->Products == NULL || output == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-
-
+	double max_in_come = maximumInCome(matamikya->Products);
+	fprintf(output, "Best Selling Product:\n");
+	if (max_in_come == 0) {
+		fprintf(output, "none\n");
+		return MATAMIKYA_SUCCESS;
+	}
+	for (Product product = getFirstSmallProduct(matamikya->Products); product != NULL;
+		 product = getNextSmallProduct(matamikya->Products, getProductID(product))) {
+		if (getProductTotalInCome(product) == max_in_come) {
+			mtmPrintIncomeLine(getProductName(product), getProductID(product), getProductTotalInCome(product), output);
+		}
+	}
 	return MATAMIKYA_SUCCESS;
 }

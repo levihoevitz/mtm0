@@ -10,76 +10,19 @@
 
 struct order_t {
 	unsigned int orderId;
-	AmountSet products;
+	Set products;
 	double total_profit;
 	OrderStatus statusOrder;
 	double price;
 };
 
-unsigned int getOrderID(Order order)
+
+void* copyOrder(void* order)
 {
-	if (order == NULL) {
-		return 0;
-	}
-	return order->orderId;
-}
-
-double getTotalProfit(Order order)
-{
-	if (order == NULL) {
-		return 0;
-	}
-	return order->total_profit;
-}
-
-OrderStatus getOrderStatus(Order order)
-{
-	if (order == NULL) {
-		return 0;
-	}
-	return order->statusOrder;
-}
-
-double getOrderPrice(Order order)
-{
-	if (order == NULL) {
-		return 0;
-	}
-	return order->price;
-}
-
-void setTotalProfit(Order order, double profit)
-{
-	if (order == NULL) {
-		return;
-	}
-	order->total_profit = profit;
-}
-
-void setOrderStatus(Order order, OrderStatus statusOrder)
-{
-	if (order == NULL) {
-		return;
-	}
-	order->statusOrder = statusOrder;
-}
-
-void setOrderPrice(Order order, double price)
-{
-	if (order == NULL) {
-		return;
-	}
-	order->price = price;
-}
-
-
-
-void* copyProduct(void* order)
-{
-	if (order == NULL) {
+	if (element == NULL) {
 		return NULL;
 	}
-	Order ord = order;
+	Order ord = element;
 	Order new_order = creatOrder(ord->orderId,
 								 ord->total_profit,
 								 ord->statusOrder,
@@ -87,7 +30,8 @@ void* copyProduct(void* order)
 	if (new_order == NULL) {
 		return NULL;
 	}
-	AS_FOREACH(Product, i, ord->products) {
+	AS_FOREACH(Product, i, ord->products)
+	{
 		if (asRegister(new_order->products, i) != AS_SUCCESS) {
 			asDestroy(new_order->products);
 			free(new_order);
@@ -97,7 +41,7 @@ void* copyProduct(void* order)
 	return new_order;
 }
 
-void freeProduct(void* order)
+void freeOrder(void* order)
 {
 	if (order == NULL) {
 		return;
@@ -107,7 +51,7 @@ void freeProduct(void* order)
 	free(ord);
 }
 
-int compareProduct(void* first_order_id, void* second_order_id)
+int compareOrder(void* first_order_id, void* second_order_id)
 {
 	if (first_order_id == NULL || second_order_id == NULL) {
 		return 0;
@@ -137,13 +81,78 @@ Order creatOrder(unsigned int orderId,
 	return new_order;
 }
 
-unsigned int getOrderID(Order ord)
+unsigned int getOrderID(Order order)
 {
-	if (ord == NULL) {
+	if (order == NULL) {
 		return 0;
 	}
-	return ord->orderId;
+	return order->orderId;
 }
+
+double getOrderTotalProfit(Order order)
+{
+	if (order == NULL) {
+		return 0;
+	}
+	return order->total_profit;
+}
+
+OrderStatus getOrderStatus(Order order)
+{
+	if (order == NULL) {
+		return 0;
+	}
+	return order->statusOrder;
+}
+
+double getOrderPrice(Order order)
+{
+	if (order == NULL) {
+		return 0;
+	}
+	return order->price;
+}
+
+Set getOrderProducts(Order order)
+{
+	if (order == NULL) {
+		return NULL;
+	}
+	return order->products;
+}
+
+void setOrderID(Order order, unsigned int orderId)
+{
+	if (order == NULL) {
+		return;
+	}
+	order->orderId = orderId;
+}
+
+void setTotalProfit(Order order, double profit)
+{
+	if (order == NULL) {
+		return;
+	}
+	order->total_profit = profit;
+}
+
+void setOrderStatus(Order order, OrderStatus statusOrder)
+{
+	if (order == NULL) {
+		return;
+	}
+	order->statusOrder = statusOrder;
+}
+
+void setOrderPrice(Order order, double price)
+{
+	if (order == NULL) {
+		return;
+	}
+	order->price = price;
+}
+
 
 bool compareOrderID(Order ord, int id)
 {
@@ -156,6 +165,7 @@ bool compareOrderID(Order ord, int id)
 	return false;
 }
 
+/*
 void changeAmountOfProductInOrder(Order order, unsigned int productId, double amount)
 {
 	if (order == NULL) {
@@ -164,7 +174,7 @@ void changeAmountOfProductInOrder(Order order, unsigned int productId, double am
 	asGetAmount(order->products,);
 	///complete
 }
-
+*/
 void changeStatusOrderToSent(Order order)
 {
 	if (order == NULL) {
@@ -173,7 +183,8 @@ void changeStatusOrderToSent(Order order)
 	order->statusOrder = ORDER_SENT;
 }
 
-void CalculatesTheProfits(Order order)
+///maybe its need to be in the matamikea
+void CalculatesAndSetTheProfits(Order order)
 {
 
 }
@@ -189,6 +200,26 @@ void cancelOrder(Order order)
 }
 
 void printOrder(Order order, FILE* output)
+{
+
+}
+
+Product getProductFromOrderWithID(Order order, unsigned int productId)
+{
+	for (Product prod = asGetFirst(order->products); prod != NULL; prod = asGetNext(order->products)) {
+		if (compareProductID(prod, productId)) {
+			return prod;
+		}
+	}
+	return NULL;
+}
+
+void addOrderProduct(Order order, unsigned int productId)
+{
+
+}
+
+void removeOrderProduct(Order order, unsigned int productId)
 {
 
 }

@@ -10,6 +10,8 @@
 struct product_t {
 	char* name;
 	unsigned int productId;
+	double amount;
+	double totalInCome;
 	MatamikyaAmountType amountType;
 	MtmProductData productData;
 	MtmCopyData copyData;
@@ -18,7 +20,6 @@ struct product_t {
 
 };
 
-char* ibibbkbjhvgevucfwerhifhi
 
 void* copyProduct(void* element)
 {
@@ -28,6 +29,7 @@ void* copyProduct(void* element)
 	Product product = element;
 	Product new_product = creatProduct(product->name,
 									   product->productId,
+									   product->amount,
 									   product->amountType,
 									   product->productData,
 									   product->copyData,
@@ -66,6 +68,7 @@ int compareProduct(void* first_product, void* second_product)
 
 Product creatProduct(const char* name,
 					 unsigned int productId,
+					 double amount,
 					 MatamikyaAmountType amountType,
 					 MtmProductData productData,
 					 MtmCopyData copyData,
@@ -85,6 +88,8 @@ Product creatProduct(const char* name,
 	}
 	strcpy(new_product->name, name);
 	new_product->productId = productId;
+	new_product->amount = amount;
+	new_product->totalInCome=0;
 	new_product->amountType = amountType;
 	new_product->productData = productData;
 	new_product->copyData = copyData;
@@ -94,7 +99,7 @@ Product creatProduct(const char* name,
 }
 
 
-bool compareProductID(Product prod, int id)
+bool compareProductID(Product prod, unsigned int id)
 {
 	if (prod->productId == id) {
 		return true;
@@ -104,10 +109,85 @@ bool compareProductID(Product prod, int id)
 
 void printProductDetails(Product product, FILE* output)
 {
-	mtmPrintProductDetails(product->name, product->productId,)
+
 }
 
 void getProductName(Product product)
 {
 
 }
+
+char* getProductName(Product product)
+{
+	if (product == NULL) {
+		return NULL;
+	}
+	return product->name;
+}
+
+unsigned int getProductID(Product product)
+{
+	if (product == NULL) {
+		return 0;
+	}
+	return product->productId;
+}
+
+MatamikyaAmountType getProductAmountType(Product product)
+{
+	if (product == NULL) {
+		return MATAMIKYA_NOTHING;
+	}
+	return product->amountType;
+}
+
+double getProductPrice(Product product)
+{
+	if (product == NULL) {
+		return NULL;
+	}
+	return product->getProductPrice(product->productData,product->amount);
+}
+
+MtmProductData getProductData(Product product)
+{
+	if (product == NULL) {
+		return NULL;
+	}
+	return product->productData;
+}
+double getProductAmount(Product product){
+	if (product==NULL){
+		return 0;
+	}
+	return product->amount;
+}
+
+void setProductAmount(Product product, double amount){
+   if (product==NULL){
+	   return;
+   }
+    product->amount+=amount;
+   ///check thing
+}
+
+double getProductTotalInCome(Product product){
+   if (product==NULL){
+	   return 0;
+   }
+   return product->totalInCome;
+}
+/*
+char* getProductName(Product product){
+   if (product==NULL){
+	   return NULL;
+   }
+   return product->name;
+}
+char* getProductName(Product product){
+   if (product==NULL){
+	   return NULL;
+   }
+   return product->name;
+}
+*/

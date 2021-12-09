@@ -13,6 +13,7 @@ typedef enum MatamikyaAmountType_t {
 	MATAMIKYA_INTEGER_AMOUNT,
 	MATAMIKYA_HALF_INTEGER_AMOUNT,
 	MATAMIKYA_ANY_AMOUNT,
+	MATAMIKYA_NOTHING
 } MatamikyaAmountType;
 
 
@@ -52,6 +53,7 @@ typedef double (* MtmGetProductPrice)(MtmProductData, const double amount);
 
 Product creatProduct(const char* name,
 					 unsigned int productId,
+					 double amount,
 					 MatamikyaAmountType amountType,
 					 MtmProductData productData,
 					 MtmCopyData copyData,
@@ -64,5 +66,21 @@ void freeProduct(void* product);
 
 int compareProduct(void* first_product, void* second_product);
 
-bool compareProductID(Product prod, int id);
+bool compareProductID(Product prod,unsigned int id);
+
+char* getProductName(Product product);
+
+unsigned int getProductID(Product product);
+
+double getProductAmount(Product product);
+
+double getProductPrice(Product product);
+
+double getProductTotalInCome(Product product);
+
+MtmProductData getProductData(Product product);
+
+void setProductAmount(Product product, double amount);
+
+
 #endif //MTM0_PRODUCT_H
