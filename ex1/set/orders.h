@@ -30,7 +30,7 @@ Set getOrderProducts(Order order);
 
 void setOrderID(Order order, unsigned int orderId);
 
-bool compareOrderID(Order ord, int id);
+bool compareOrderID(Order ord, unsigned int id);
 
 void changeAmountOfProductInOrder(Order order,unsigned int productId, double amount);
 

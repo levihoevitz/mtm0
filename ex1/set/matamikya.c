@@ -103,13 +103,21 @@ static bool isTheNameLegal(const char* name)
 	return true;
 }
 
-static bool isTheAmountTypeLegal(const double amount)
+static bool isTheAmountTypeLegal(const double amount, const MatamikyaAmountType amountType)
 {
 	if (amount < 0) {
 		return false;
 	}
-	///check type
-	return true;
+	if (amountType == MATAMIKYA_ANY_AMOUNT) {
+		return true;
+	} else if (amountType == MATAMIKYA_HALF_INTEGER_AMOUNT) {
+		if ()
+			return true;
+	} else if (amountType == MATAMIKYA_INTEGER_AMOUNT) {
+		if ()
+			return true;
+	}
+	return false;
 }
 
 MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const char* name,
@@ -124,7 +132,7 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
 	if (!isTheNameLegal(name)) {
 		return MATAMIKYA_INVALID_NAME;
 	}
-	if (!isTheAmountTypeLegal(amount)) {
+	if (!isTheAmountTypeLegal(amount, amountType)) {
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
 
@@ -175,14 +183,6 @@ MatamikyaResult mtmNewProduct(Matamikya matamikya, const unsigned int id, const 
  *    error code is returned if one of the parameters is invalid, and MATAMIKYA_SUCCESS
  *    is returned if all the parameters are valid.
  */
-static bool isTheAmountLegal(const double amount)
-{
-	if (amount < 0) {
-		return false;
-	}
-	///check type
-	return true;
-}
 
 static Product getProductWithID(Set products, unsigned int id)
 {
@@ -209,15 +209,16 @@ MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int i
 	if (matamikya == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
-	if (!isTheAmountTypeLegal(amount)) {
-		return MATAMIKYA_INVALID_AMOUNT;
-	}
-	if (!isTheAmountLegal(amount)) {
-		return MATAMIKYA_INSUFFICIENT_AMOUNT;
-	}
+
 	Product product = getProductWithID(matamikya->Products, id);
 	if (product == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
+	}
+	if (!isTheAmountTypeLegal(amount, getProductAmountType(product))) {
+		return MATAMIKYA_INVALID_AMOUNT;
+	}
+	if (getProductAmount(product) + amount < 0) {
+		return MATAMIKYA_INSUFFICIENT_AMOUNT;
 	}
 
 	setProductAmount(product, amount);
@@ -334,9 +335,7 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 	if (getProductWithID(matamikya->Products, productId) == NULL) {
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
-	if (!isTheAmountTypeLegal(amount)) {
-		return MATAMIKYA_INVALID_AMOUNT;
-	}
+
 
 	Order order = getOrderWithID(matamikya->orders, orderId);
 	if (order == NULL) {
@@ -344,6 +343,9 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 	}
 
 	Product product = getProductWithID(getOrderProducts(order), productId);
+	if (!isTheAmountTypeLegal(amount, getProductAmountType(product))) {
+		return MATAMIKYA_INVALID_AMOUNT;
+	}
 	if (product == NULL && amount > 0) {
 		addOrderProduct(order, productId);
 		return MATAMIKYA_SUCCESS;
@@ -485,7 +487,6 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
 	mtmPrintOrderHeading(orderId, output);
-	///to change to product of order
 	for (Product product = getFirstSmallProduct(getOrderProducts(order));
 		 product != NULL; product = getNextSmallProduct(getOrderProducts(order),
 														getProductID(product))) {

@@ -72,6 +72,8 @@ char* getProductName(Product product);
 
 unsigned int getProductID(Product product);
 
+MatamikyaAmountType getProductAmountType(Product product);
+
 double getProductAmount(Product product);
 
 double getProductPrice(Product product);

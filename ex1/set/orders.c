@@ -154,7 +154,7 @@ void setOrderPrice(Order order, double price)
 }
 
 
-bool compareOrderID(Order ord, int id)
+bool compareOrderID(Order ord,unsigned int id)
 {
 	if (ord == NULL) {
 		return false;
