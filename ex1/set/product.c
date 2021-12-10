@@ -5,7 +5,7 @@
 #include "product.h"
 #include "string.h"
 #include "stdlib.h"
-#include "matamikya_print.h"
+
 
 struct product_t {
 	char* name;
@@ -17,7 +17,6 @@ struct product_t {
 	MtmCopyData copyData;
 	MtmFreeData freeData;
 	MtmGetProductPrice getProductPrice;
-
 };
 
 
@@ -38,6 +37,7 @@ void* copyProduct(void* element)
 	if (new_product == NULL) {
 		return NULL;
 	}
+
 	new_product->productData = copyProduct(product->productData);
 	if (new_product->productData == NULL) {
 		freeProduct(new_product);
@@ -78,7 +78,7 @@ Product creatProduct(const char* name,
 	if (name == NULL) {
 		return NULL;
 	}
-	Product new_product = malloc(sizeof(new_product));
+	Product new_product = malloc(sizeof(*new_product));
 	if (new_product == NULL) {
 		return NULL;
 	}
@@ -105,16 +105,6 @@ bool compareProductID(Product prod, unsigned int id)
 		return true;
 	}
 	return false;
-}
-
-void printProductDetails(Product product, FILE* output)
-{
-
-}
-
-void getProductName(Product product)
-{
-
 }
 
 char* getProductName(Product product)
@@ -144,18 +134,11 @@ MatamikyaAmountType getProductAmountType(Product product)
 double getProductPrice(Product product)
 {
 	if (product == NULL) {
-		return NULL;
+		return 0;
 	}
 	return product->getProductPrice(product->productData,product->amount);
 }
 
-MtmProductData getProductData(Product product)
-{
-	if (product == NULL) {
-		return NULL;
-	}
-	return product->productData;
-}
 double getProductAmount(Product product){
 	if (product==NULL){
 		return 0;
@@ -168,7 +151,6 @@ void setProductAmount(Product product, double amount){
 	   return;
    }
     product->amount+=amount;
-   ///check thing
 }
 
 double getProductTotalInCome(Product product){
@@ -177,17 +159,4 @@ double getProductTotalInCome(Product product){
    }
    return product->totalInCome;
 }
-/*
-char* getProductName(Product product){
-   if (product==NULL){
-	   return NULL;
-   }
-   return product->name;
-}
-char* getProductName(Product product){
-   if (product==NULL){
-	   return NULL;
-   }
-   return product->name;
-}
-*/
+

@@ -17,23 +17,23 @@ struct order_t {
 };
 
 
-void* copyOrder(void* order)
+void* copyOrder(void* element)
 {
 	if (element == NULL) {
 		return NULL;
 	}
-	Order ord = element;
-	Order new_order = creatOrder(ord->orderId,
-								 ord->total_profit,
-								 ord->statusOrder,
-								 ord->price);
+	Order order = element;
+	Order new_order = creatOrder(order->orderId,
+								 order->total_profit,
+								 order->statusOrder,
+								 order->price);
 	if (new_order == NULL) {
 		return NULL;
 	}
-	AS_FOREACH(Product, i, ord->products)
+	SET_FOREACH(Product, i, order->products)
 	{
-		if (asRegister(new_order->products, i) != AS_SUCCESS) {
-			asDestroy(new_order->products);
+		if (setIsIn(new_order->products, i) != SET_SUCCESS) {
+			setDestroy(new_order->products);
 			free(new_order);
 			return NULL;
 		}
@@ -47,7 +47,7 @@ void freeOrder(void* order)
 		return;
 	}
 	Order ord = order;
-	asDestroy(ord->products);
+	setDestroy(ord->products);
 	free(ord);
 }
 
@@ -71,7 +71,7 @@ Order creatOrder(unsigned int orderId,
 	}
 	new_order->orderId = orderId;
 	new_order->total_profit = total_profit;
-	new_order->products = asCreate(copyProduct, freeProduct, compareProduct);
+	new_order->products = setCreate(copyProduct, freeProduct, compareProduct);
 	if (new_order->products == NULL) {
 		free(new_order);
 		return NULL;
@@ -165,16 +165,6 @@ bool compareOrderID(Order ord,unsigned int id)
 	return false;
 }
 
-/*
-void changeAmountOfProductInOrder(Order order, unsigned int productId, double amount)
-{
-	if (order == NULL) {
-		return;
-	}
-	asGetAmount(order->products,);
-	///complete
-}
-*/
 void changeStatusOrderToSent(Order order)
 {
 	if (order == NULL) {
@@ -199,14 +189,9 @@ void cancelOrder(Order order)
 
 }
 
-void printOrder(Order order, FILE* output)
-{
-
-}
-
 Product getProductFromOrderWithID(Order order, unsigned int productId)
 {
-	for (Product prod = asGetFirst(order->products); prod != NULL; prod = asGetNext(order->products)) {
+	for (Product prod = setGetFirst(order->products); prod != NULL; prod = setGetNext(order->products)) {
 		if (compareProductID(prod, productId)) {
 			return prod;
 		}
@@ -221,5 +206,10 @@ void addOrderProduct(Order order, unsigned int productId)
 
 void removeOrderProduct(Order order, unsigned int productId)
 {
-
+	for (Product product = setGetFirst(order->products); product != NULL; product = setGetNext(order->products)) {
+		if (getProductID(product) ==productId) {
+			freeProduct(product);
+			return;
+		}
+	}
 }

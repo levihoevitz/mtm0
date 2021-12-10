@@ -5,6 +5,7 @@
 #ifndef MTM0_ORDERS_H
 #define MTM0_ORDERS_H
 #include "set.h"
+
 typedef struct order_t* Order;
 typedef enum {
 	ORDER_SENT,
@@ -32,8 +33,6 @@ void setOrderID(Order order, unsigned int orderId);
 
 bool compareOrderID(Order ord, unsigned int id);
 
-void changeAmountOfProductInOrder(Order order,unsigned int productId, double amount);
-
 void changeStatusOrderToSent(Order order);
 
 bool IsTheAmountExists(Order order);
@@ -43,5 +42,7 @@ void CalculatesAndSetTheProfits(Order order);
 void addOrderProduct(Order order,unsigned int productId);
 
 void removeOrderProduct(Order order,unsigned int productId);
+
+//void changeAmountOfProductInOrder(Order order,unsigned int productId, double amount);
 
 #endif //MTM0_ORDERS_H

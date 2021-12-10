@@ -3,7 +3,6 @@
 #include "set.h"
 #include "product.h"
 #include "string.h"
-#include "amount_set.h"
 #include "orders.h"
 #include "matamikya_print.h"
 
@@ -21,7 +20,7 @@ struct Matamikya_t {
  */
 Matamikya matamikyaCreate()
 {
-	Matamikya new_matamikya = malloc(sizeof(new_matamikya));
+	Matamikya new_matamikya = malloc(sizeof(*new_matamikya));
 	if (new_matamikya == NULL) {
 		return NULL;
 	}
@@ -111,10 +110,12 @@ static bool isTheAmountTypeLegal(const double amount, const MatamikyaAmountType 
 	if (amountType == MATAMIKYA_ANY_AMOUNT) {
 		return true;
 	} else if (amountType == MATAMIKYA_HALF_INTEGER_AMOUNT) {
-		if ()
+		///complete
+		if (amount)
 			return true;
 	} else if (amountType == MATAMIKYA_INTEGER_AMOUNT) {
-		if ()
+		///complete
+		if (amount)
 			return true;
 	}
 	return false;
@@ -196,6 +197,9 @@ static Product getProductWithID(Set products, unsigned int id)
 
 static Order getOrderWithID(Set orders, unsigned int id)
 {
+	if (orders == NULL) {
+		return NULL;
+	}
 	for (Order ord = setGetFirst(orders); ord != NULL; ord = setGetNext(orders)) {
 		if (compareOrderID(ord, id)) {
 			return ord;
@@ -225,9 +229,14 @@ MatamikyaResult mtmChangeProductAmount(Matamikya matamikya, const unsigned int i
 	return MATAMIKYA_SUCCESS;
 }
 
-static void removeProductFromOrderByID(Set orders, unsigned int id)
+static void removeProductFromOrdersByID(Set orders, unsigned int id)
 {
-
+	if (orders == NULL) {
+		return;
+	}
+	for (Order order = setGetFirst(orders); order != NULL; order = setGetNext(orders)) {
+		removeOrderProduct(order, id);
+	}
 }
 
 /**
@@ -257,7 +266,7 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id)
 		return MATAMIKYA_PRODUCT_NOT_EXIST;
 	}
 	freeProduct(product);
-	removeProductFromOrderByID(matamikya->orders, id);
+	removeProductFromOrdersByID(matamikya->orders, id);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -273,7 +282,16 @@ MatamikyaResult mtmClearProduct(Matamikya matamikya, const unsigned int id)
 
 static unsigned int getMaxOrderID(Set orders)
 {
-
+	if (orders == NULL) {
+		return 0;
+	}
+	unsigned int max_product_id = getProductID(setGetFirst(orders));
+	for (Product product = setGetFirst(orders); product != NULL; product = setGetNext(orders)) {
+		if (max_product_id < getProductID(product)) {
+			max_product_id = getProductID(product);
+		}
+	}
+	return max_product_id;
 }
 
 unsigned int mtmCreateNewOrder(Matamikya matamikya)
@@ -281,15 +299,12 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya)
 	if (matamikya == NULL) {
 		return 0;
 	}
-	Order new_order = malloc(sizeof(new_order));
+	Order new_order = creatOrder(1, 0, ORDER_IS_NOT_SENT, 0);
 	if (new_order == NULL) {
 		return 0;
 	}
-	if (matamikya->orders == NULL) {
-		setOrderID(new_order, 1);
-	} else {
-		setOrderID(new_order, getMaxOrderID(matamikya->orders) + 1);
-	}
+
+	setOrderID(new_order, getMaxOrderID(matamikya->orders) + 1);
 	if (setAdd(matamikya->orders, new_order) != SET_SUCCESS) {
 		return 0;
 	}
@@ -442,15 +457,41 @@ MatamikyaResult mtmCancelOrder(Matamikya matamikya, const unsigned int orderId)
 
 static Product getFirstSmallProduct(Set products)
 {
+	if (products == NULL) {
+		return NULL;
+	}
+	unsigned int min_product_id = getProductID(setGetFirst(products));
+	for (Product product = setGetFirst(products); product != NULL; product = setGetNext(products)) {
+		if (getProductID(product) < min_product_id) {
+			min_product_id = getProductID(product);
+		}
+	}
+	return getProductWithID(products, min_product_id);
 }
 
 static Product getNextSmallProduct(Set products, unsigned int productID)
 {
+	if (products == NULL) {
+		return NULL;
+	}
+	unsigned int min_product_id;
+	for (Product product = setGetFirst(products); product != NULL; product = setGetNext(products)) {
+		if (productID < getProductID(product)) {
+			min_product_id = getProductID(product);
+			break;
+		}
+	}
+	for (Product product = setGetFirst(products); product != NULL; product = setGetNext(products)) {
+		if (productID < getProductID(product) && getProductID(product) < min_product_id) {
+			min_product_id = getProductID(product);
+		}
+	}
+	return getProductWithID(products, min_product_id);
 }
 
 MatamikyaResult mtmPrintInventory(Matamikya matamikya, FILE* output)
 {
-	if (matamikya == NULL || output == NULL) {
+	if (matamikya == NULL || matamikya->Products == NULL || output == NULL) {
 		return MATAMIKYA_NULL_ARGUMENT;
 	}
 	for (Product product = getFirstSmallProduct(matamikya->Products); product != NULL;
@@ -510,7 +551,13 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
 
 static double maximumInCome(Set products)
 {
-
+	double max = 0;
+	for (Product product = setGetFirst(products); product != NULL; product = setGetNext(products)) {
+		if (getProductTotalInCome(product) > max) {
+			max = getProductTotalInCome(product);
+		}
+	}
+	return max;
 }
 
 MatamikyaResult mtmPrintBestSelling(Matamikya matamikya, FILE* output)

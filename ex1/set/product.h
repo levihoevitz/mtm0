@@ -80,7 +80,6 @@ double getProductPrice(Product product);
 
 double getProductTotalInCome(Product product);
 
-MtmProductData getProductData(Product product);
 
 void setProductAmount(Product product, double amount);
 
