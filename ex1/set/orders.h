@@ -1,7 +1,3 @@
-//
-// Created by 97250 on 02/12/2021.
-//
-
 #ifndef MTM0_ORDERS_H
 #define MTM0_ORDERS_H
 #include "set.h"
@@ -10,30 +6,20 @@ typedef struct order_t* Order;
 
 void* copyOrder(void* order);
 
-void freeOrder(void* order);
+void freeOrder(void* element);
 
-int compareOrder(void* first_order_id, void* second_order_id);
+int compareOrder(void* first_element, void* second_element);
 
-Order creatOrder(unsigned int orderId,
-				 double total_profit,
-				 double price);
+Order creatOrder(unsigned int orderId);
 
 unsigned int getOrderID(Order ord);
-
-double getOrderTotalProfit(Order order);
 
 Set getOrderProducts(Order order);
 
 void setOrderID(Order order, unsigned int orderId);
 
-bool compareOrderID(Order ord, unsigned int id);
+double getOrderProfits(Order order);
 
-//void changeStatusOrderToSent(Order order);
-
-double CalculatesAndSetTheProfits(Order order);
-
-void removeOrderProduct(Order order,unsigned int productId);
-
-//void changeAmountOfProductInOrder(Order order,unsigned int productId, double amount);
+void removeOrderProductByID(Order order, unsigned int productId);
 
 #endif //MTM0_ORDERS_H

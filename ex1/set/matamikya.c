@@ -204,9 +204,10 @@ static Order getOrderWithID(Set orders, unsigned int id)
 	if (orders == NULL) {
 		return NULL;
 	}
-	for (Order ord = setGetFirst(orders); ord != NULL; ord = setGetNext(orders)) {
-		if (compareOrderID(ord, id)) {
-			return ord;
+	for (Order order = setGetFirst(orders); order != NULL; order = setGetNext(orders)) {
+		unsigned int order_id = getOrderID(order);
+		if (compareOrder(&order_id, &id)==0) {
+			return order;
 		}
 	}
 	return NULL;
@@ -239,7 +240,7 @@ static void removeProductFromOrdersByID(Set orders, unsigned int id)
 		return;
 	}
 	for (Order order = setGetFirst(orders); order != NULL; order = setGetNext(orders)) {
-		removeOrderProduct(order, id);
+		removeOrderProductByID(order, id);
 	}
 }
 
@@ -303,7 +304,7 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya)
 	if (matamikya == NULL) {
 		return 0;
 	}
-	Order new_order = creatOrder(1, 0, 0);
+	Order new_order = creatOrder(1);
 	if (new_order == NULL) {
 		return 0;
 	}
@@ -366,12 +367,12 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
 	if (product == NULL && amount > 0) {
-		setAdd(getOrderProducts(order),product);
+		setAdd(getOrderProducts(order), product);
 		return MATAMIKYA_SUCCESS;
 	}
 
 	if (getProductAmount(product) + amount <= 0) {
-		removeOrderProduct(order, productId);
+		removeOrderProductByID(order, productId);
 		return MATAMIKYA_SUCCESS;
 	}
 
@@ -403,9 +404,11 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
  *     MATAMIKYA_SUCCESS - if the order was shipped successfully.
  */
 
-static void SetProfits(Order order, Set products){
-	SET_FOREACH(Product, product_of_order, getOrderProducts(order)){
-		setProductAmount(getProductWithID(products, getProductID(product_of_order)), getProductAmount(product_of_order));
+static void SetProfits(Order order, Set products)
+{
+	SET_FOREACH(Product, product_of_order, getOrderProducts(order)) {
+		setProductAmount(getProductWithID(products, getProductID(product_of_order)),
+						 -getProductAmount(product_of_order));
 	}
 
 }
@@ -429,7 +432,7 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 		}
 	}
 	SetProfits(order, matamikya->Products);
-	setRemove(matamikya->orders,order);
+	setRemove(matamikya->orders, order);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -551,11 +554,10 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
 		 product != NULL; product = getNextSmallProduct(getOrderProducts(order),
 														getProductID(product))) {
 		mtmPrintProductDetails(getProductName(product), getProductID(product),
-							   getProductAmount(product), getProductPrice(product), output);
+							   getProductAmount(product), getProductTotalPrice(product), output);
 	}
 	fprintf(output, "----------\n");
-	CalculatesAndSetTheProfits(order);
-	mtmPrintOrderSummary(getOrderTotalProfit(order), output);
+	mtmPrintOrderSummary(getOrderProfits(order), output);
 	return MATAMIKYA_SUCCESS;
 }
 

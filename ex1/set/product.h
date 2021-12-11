@@ -1,7 +1,3 @@
-//
-// Created by 97250 on 02/12/2021.
-//
-
 #ifndef MTM0_PRODUCT_H
 #define MTM0_PRODUCT_H
 #include "stdbool.h"
@@ -60,7 +56,7 @@ Product creatProduct(const char* name,
 					 MtmFreeData freeData,
 					 MtmGetProductPrice getProductPrice);
 
-void* copyProduct(void* product);
+void* copyProduct(void* element);
 
 void freeProduct(void* product);
 
@@ -76,7 +72,7 @@ MatamikyaAmountType getProductAmountType(Product product);
 
 double getProductAmount(Product product);
 
-double getProductPrice(Product product);
+double getProductTotalPrice(Product product);
 
 double getProductPriceOneUnit(Product product);
 

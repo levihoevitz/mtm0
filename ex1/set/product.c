@@ -1,7 +1,3 @@
-//
-// Created by 97250 on 02/12/2021.
-//
-
 #include "product.h"
 #include "string.h"
 #include "stdlib.h"
@@ -38,7 +34,7 @@ void* copyProduct(void* element)
 		return NULL;
 	}
 
-	new_product->productData = copyProduct(product->productData);
+	new_product->productData = product->copyData(product->productData);
 	if (new_product->productData == NULL) {
 		freeProduct(new_product);
 		return NULL;
@@ -131,7 +127,7 @@ MatamikyaAmountType getProductAmountType(Product product)
 	return product->amountType;
 }
 
-double getProductPrice(Product product)
+double getProductTotalPrice(Product product)
 {
 	if (product == NULL) {
 		return 0;
@@ -154,13 +150,6 @@ double getProductAmount(Product product){
 	return product->amount;
 }
 
-void setProductAmount(Product product, double amount){
-   if (product==NULL){
-	   return;
-   }
-    product->amount+=amount;
-}
-
 double getProductTotalInCome(Product product){
    if (product==NULL){
 	   return 0;
@@ -168,3 +157,9 @@ double getProductTotalInCome(Product product){
    return product->totalInCome;
 }
 
+void setProductAmount(Product product, double amount){
+	if (product==NULL){
+		return;
+	}
+	product->amount+=amount;
+}

@@ -1,6 +1,3 @@
-//
-// Created by 97250 on 27/11/2021.
-//
 #include "matamikya_print.h"
 
 void mtmPrintProductDetails(const char* name, const unsigned int id, const double amount, const double price, FILE* output){
