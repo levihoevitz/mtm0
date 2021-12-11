@@ -139,6 +139,14 @@ double getProductPrice(Product product)
 	return product->getProductPrice(product->productData,product->amount);
 }
 
+double getProductPriceOneUnit(Product product)
+{
+	if (product == NULL) {
+		return 0;
+	}
+	return product->getProductPrice(product->productData,1);
+}
+
 double getProductAmount(Product product){
 	if (product==NULL){
 		return 0;

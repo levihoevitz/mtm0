@@ -6,13 +6,11 @@
 #include "list.h"
 #include "product.h"
 #include "stdlib.h"
-#include "matamikya_print.h"
 
 struct order_t {
 	unsigned int orderId;
 	Set products;
 	double total_profit;
-	OrderStatus statusOrder;
 	double price;
 };
 
@@ -25,13 +23,11 @@ void* copyOrder(void* element)
 	Order order = element;
 	Order new_order = creatOrder(order->orderId,
 								 order->total_profit,
-								 order->statusOrder,
 								 order->price);
 	if (new_order == NULL) {
 		return NULL;
 	}
-	SET_FOREACH(Product, i, order->products)
-	{
+	SET_FOREACH(Product, i, order->products) {
 		if (setIsIn(new_order->products, i) != SET_SUCCESS) {
 			setDestroy(new_order->products);
 			free(new_order);
@@ -61,7 +57,6 @@ int compareOrder(void* first_order_id, void* second_order_id)
 
 Order creatOrder(unsigned int orderId,
 				 double total_profit,
-				 OrderStatus statusOrder,
 				 double price)
 {
 
@@ -76,7 +71,6 @@ Order creatOrder(unsigned int orderId,
 		free(new_order);
 		return NULL;
 	}
-	new_order->statusOrder = statusOrder;
 	new_order->price = price;
 	return new_order;
 }
@@ -96,7 +90,7 @@ double getOrderTotalProfit(Order order)
 	}
 	return order->total_profit;
 }
-
+/*
 OrderStatus getOrderStatus(Order order)
 {
 	if (order == NULL) {
@@ -104,6 +98,24 @@ OrderStatus getOrderStatus(Order order)
 	}
 	return order->statusOrder;
 }
+
+ void setOrderStatus(Order order, OrderStatus statusOrder)
+{
+	if (order == NULL) {
+		return;
+	}
+	order->statusOrder = statusOrder;
+}
+
+ void changeStatusOrderToSent(Order order)
+{
+	if (order == NULL) {
+		return;
+	}
+	order->statusOrder = ORDER_SENT;
+}
+
+*/
 
 double getOrderPrice(Order order)
 {
@@ -137,13 +149,6 @@ void setTotalProfit(Order order, double profit)
 	order->total_profit = profit;
 }
 
-void setOrderStatus(Order order, OrderStatus statusOrder)
-{
-	if (order == NULL) {
-		return;
-	}
-	order->statusOrder = statusOrder;
-}
 
 void setOrderPrice(Order order, double price)
 {
@@ -154,7 +159,7 @@ void setOrderPrice(Order order, double price)
 }
 
 
-bool compareOrderID(Order ord,unsigned int id)
+bool compareOrderID(Order ord, unsigned int id)
 {
 	if (ord == NULL) {
 		return false;
@@ -165,23 +170,18 @@ bool compareOrderID(Order ord,unsigned int id)
 	return false;
 }
 
-void changeStatusOrderToSent(Order order)
+
+
+double CalculatesAndSetTheProfits(Order order)
 {
 	if (order == NULL) {
-		return;
+		return 0;
 	}
-	order->statusOrder = ORDER_SENT;
-}
-
-///maybe its need to be in the matamikea
-void CalculatesAndSetTheProfits(Order order)
-{
-
-}
-
-bool IsTheAmountExists(Order order)
-{
-	return false;
+	double total_profit_of_order = 0;
+	for (Product product = setGetFirst(order->products); product != NULL; product = setGetNext(order->products)) {
+		total_profit_of_order += getProductPrice(product);
+	}
+	return total_profit_of_order;
 }
 
 void cancelOrder(Order order)
@@ -199,15 +199,11 @@ Product getProductFromOrderWithID(Order order, unsigned int productId)
 	return NULL;
 }
 
-void addOrderProduct(Order order, unsigned int productId)
-{
-
-}
 
 void removeOrderProduct(Order order, unsigned int productId)
 {
 	for (Product product = setGetFirst(order->products); product != NULL; product = setGetNext(order->products)) {
-		if (getProductID(product) ==productId) {
+		if (getProductID(product) == productId) {
 			freeProduct(product);
 			return;
 		}

@@ -28,7 +28,7 @@ struct AmountSet_t {
  */
 AmountSet asCreate()
 {
-	AmountSet new_as = malloc(sizeof(new_as));
+	AmountSet new_as = malloc(sizeof(*new_as));
 	if (new_as == NULL) {
 		return NULL;
 	}
@@ -191,7 +191,7 @@ AmountSetResult asRegister(AmountSet set, const char* element)
 	if (asContains(set, element)) {
 		return AS_ITEM_ALREADY_EXISTS;
 	}
-	Node new_nod = malloc(sizeof(new_nod));
+	Node new_nod = malloc(sizeof(*new_nod));
 	if (new_nod == NULL) {
 		return AS_OUT_OF_MEMORY;
 	}

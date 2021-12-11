@@ -109,11 +109,15 @@ static bool isTheAmountTypeLegal(const double amount, const MatamikyaAmountType 
 	}
 	if (amountType == MATAMIKYA_ANY_AMOUNT) {
 		return true;
-	} else if (amountType == MATAMIKYA_HALF_INTEGER_AMOUNT) {
+	}
+	if (amountType == MATAMIKYA_HALF_INTEGER_AMOUNT) {
 		///complete
-		if (amount)
+		if (amount) {
 			return true;
-	} else if (amountType == MATAMIKYA_INTEGER_AMOUNT) {
+		} else
+			return false;
+	}
+	if (amountType == MATAMIKYA_INTEGER_AMOUNT) {
 		///complete
 		if (amount)
 			return true;
@@ -299,7 +303,7 @@ unsigned int mtmCreateNewOrder(Matamikya matamikya)
 	if (matamikya == NULL) {
 		return 0;
 	}
-	Order new_order = creatOrder(1, 0, ORDER_IS_NOT_SENT, 0);
+	Order new_order = creatOrder(1, 0, 0);
 	if (new_order == NULL) {
 		return 0;
 	}
@@ -362,7 +366,7 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
 		return MATAMIKYA_INVALID_AMOUNT;
 	}
 	if (product == NULL && amount > 0) {
-		addOrderProduct(order, productId);
+		setAdd(getOrderProducts(order),product);
 		return MATAMIKYA_SUCCESS;
 	}
 
@@ -398,6 +402,14 @@ MatamikyaResult mtmChangeProductAmountInOrder(Matamikya matamikya, const unsigne
  *         that is larger than its amount in matamikya.
  *     MATAMIKYA_SUCCESS - if the order was shipped successfully.
  */
+
+static void SetProfits(Order order, Set products){
+	SET_FOREACH(Product, product_of_order, getOrderProducts(order)){
+		setProductAmount(getProductWithID(products, getProductID(product_of_order)), getProductAmount(product_of_order));
+	}
+
+}
+
 MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 {
 	if (matamikya == NULL) {
@@ -408,12 +420,16 @@ MatamikyaResult mtmShipOrder(Matamikya matamikya, const unsigned int orderId)
 	if (order == NULL) {
 		return MATAMIKYA_ORDER_NOT_EXIST;
 	}
+	for (Product product_of_order = setGetFirst(getOrderProducts(order));
+		 product_of_order != NULL; product_of_order = setGetNext(getOrderProducts(order))) {
 
-	if (!IsTheAmountExists(order)) {
-		return MATAMIKYA_INSUFFICIENT_AMOUNT;
+		Product product_of_warehouse = getProductWithID(matamikya->Products, getProductID(product_of_order));
+		if (getProductAmount(product_of_warehouse) - getProductAmount(product_of_order) < 0) {
+			return MATAMIKYA_INSUFFICIENT_AMOUNT;
+		}
 	}
-	CalculatesAndSetTheProfits(order);
-	changeStatusOrderToSent(order);
+	SetProfits(order, matamikya->Products);
+	setRemove(matamikya->orders,order);
 	return MATAMIKYA_SUCCESS;
 }
 
@@ -457,9 +473,11 @@ MatamikyaResult mtmCancelOrder(Matamikya matamikya, const unsigned int orderId)
 
 static Product getFirstSmallProduct(Set products)
 {
+	/*
 	if (products == NULL) {
 		return NULL;
 	}
+	 */
 	unsigned int min_product_id = getProductID(setGetFirst(products));
 	for (Product product = setGetFirst(products); product != NULL; product = setGetNext(products)) {
 		if (getProductID(product) < min_product_id) {
@@ -471,6 +489,7 @@ static Product getFirstSmallProduct(Set products)
 
 static Product getNextSmallProduct(Set products, unsigned int productID)
 {
+
 	if (products == NULL) {
 		return NULL;
 	}
@@ -497,7 +516,7 @@ MatamikyaResult mtmPrintInventory(Matamikya matamikya, FILE* output)
 	for (Product product = getFirstSmallProduct(matamikya->Products); product != NULL;
 		 product = getNextSmallProduct(matamikya->Products, getProductID(product))) {
 		mtmPrintProductDetails(getProductName(product), getProductID(product),
-							   getProductAmount(product), getProductPrice(product), output);
+							   getProductAmount(product), getProductPriceOneUnit(product), output);
 	}
 	return MATAMIKYA_SUCCESS;
 }
@@ -532,8 +551,10 @@ MatamikyaResult mtmPrintOrder(Matamikya matamikya, const unsigned int orderId, F
 		 product != NULL; product = getNextSmallProduct(getOrderProducts(order),
 														getProductID(product))) {
 		mtmPrintProductDetails(getProductName(product), getProductID(product),
-							   getProductAmount(product), getProductPrice(product) * getProductAmount(product), output);
+							   getProductAmount(product), getProductPrice(product), output);
 	}
+	fprintf(output, "----------\n");
+	CalculatesAndSetTheProfits(order);
 	mtmPrintOrderSummary(getOrderTotalProfit(order), output);
 	return MATAMIKYA_SUCCESS;
 }
@@ -575,6 +596,7 @@ MatamikyaResult mtmPrintBestSelling(Matamikya matamikya, FILE* output)
 		 product = getNextSmallProduct(matamikya->Products, getProductID(product))) {
 		if (getProductTotalInCome(product) == max_in_come) {
 			mtmPrintIncomeLine(getProductName(product), getProductID(product), getProductTotalInCome(product), output);
+			break;
 		}
 	}
 	return MATAMIKYA_SUCCESS;

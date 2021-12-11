@@ -78,6 +78,8 @@ double getProductAmount(Product product);
 
 double getProductPrice(Product product);
 
+double getProductPriceOneUnit(Product product);
+
 double getProductTotalInCome(Product product);
 
 
