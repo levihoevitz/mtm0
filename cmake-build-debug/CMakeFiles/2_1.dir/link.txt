@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\2_1.dir/objects.a
-C:\PROGRA~1\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin\ar.exe cr CMakeFiles\2_1.dir/objects.a @CMakeFiles\2_1.dir\objects1.rsp
-C:\PROGRA~1\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin\gcc.exe -std=c99 --pedantic-errors -Wall -Werror -g -Wl,--whole-archive CMakeFiles\2_1.dir/objects.a -Wl,--no-whole-archive -o 2_1.exe -Wl,--out-implib,lib2_1.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\2_1.dir\linklibs.rsp

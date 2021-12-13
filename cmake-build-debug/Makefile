@@ -74,17 +74,6 @@ CMAKE_BINARY_DIR = C:\Users\97250\CLionProjects\mtm0\cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -95,6 +84,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	"C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -129,218 +129,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named part1
+# Target rules for targets named matamikya
 
 # Build rule for target.
-part1: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 part1
-.PHONY : part1
+matamikya: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 matamikya
+.PHONY : matamikya
 
 # fast build rule for target.
-part1/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\part1.dir\build.make CMakeFiles/part1.dir/build
-.PHONY : part1/fast
-
-#=============================================================================
-# Target rules for targets named mtm_buggy
-
-# Build rule for target.
-mtm_buggy: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 mtm_buggy
-.PHONY : mtm_buggy
-
-# fast build rule for target.
-mtm_buggy/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\mtm_buggy.dir\build.make CMakeFiles/mtm_buggy.dir/build
-.PHONY : mtm_buggy/fast
-
-#=============================================================================
-# Target rules for targets named 2_1
-
-# Build rule for target.
-2_1: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 2_1
-.PHONY : 2_1
-
-# fast build rule for target.
-2_1/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/build
-.PHONY : 2_1/fast
-
-#=============================================================================
-# Target rules for targets named 2_2
-
-# Build rule for target.
-2_2: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 2_2
-.PHONY : 2_2
-
-# fast build rule for target.
-2_2/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_2.dir\build.make CMakeFiles/2_2.dir/build
-.PHONY : 2_2/fast
-
-ex0/part1/part1.obj: ex0/part1/part1.c.obj
-
-.PHONY : ex0/part1/part1.obj
-
-# target to build an object file
-ex0/part1/part1.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\part1.dir\build.make CMakeFiles/part1.dir/ex0/part1/part1.c.obj
-.PHONY : ex0/part1/part1.c.obj
-
-ex0/part1/part1.i: ex0/part1/part1.c.i
-
-.PHONY : ex0/part1/part1.i
-
-# target to preprocess a source file
-ex0/part1/part1.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\part1.dir\build.make CMakeFiles/part1.dir/ex0/part1/part1.c.i
-.PHONY : ex0/part1/part1.c.i
-
-ex0/part1/part1.s: ex0/part1/part1.c.s
-
-.PHONY : ex0/part1/part1.s
-
-# target to generate assembly for a file
-ex0/part1/part1.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\part1.dir\build.make CMakeFiles/part1.dir/ex0/part1/part1.c.s
-.PHONY : ex0/part1/part1.c.s
-
-ex0/part2/mtm_buggy.obj: ex0/part2/mtm_buggy.c.obj
-
-.PHONY : ex0/part2/mtm_buggy.obj
-
-# target to build an object file
-ex0/part2/mtm_buggy.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\mtm_buggy.dir\build.make CMakeFiles/mtm_buggy.dir/ex0/part2/mtm_buggy.c.obj
-.PHONY : ex0/part2/mtm_buggy.c.obj
-
-ex0/part2/mtm_buggy.i: ex0/part2/mtm_buggy.c.i
-
-.PHONY : ex0/part2/mtm_buggy.i
-
-# target to preprocess a source file
-ex0/part2/mtm_buggy.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\mtm_buggy.dir\build.make CMakeFiles/mtm_buggy.dir/ex0/part2/mtm_buggy.c.i
-.PHONY : ex0/part2/mtm_buggy.c.i
-
-ex0/part2/mtm_buggy.s: ex0/part2/mtm_buggy.c.s
-
-.PHONY : ex0/part2/mtm_buggy.s
-
-# target to generate assembly for a file
-ex0/part2/mtm_buggy.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\mtm_buggy.dir\build.make CMakeFiles/mtm_buggy.dir/ex0/part2/mtm_buggy.c.s
-.PHONY : ex0/part2/mtm_buggy.c.s
-
-ex1/dry/2_1.obj: ex1/dry/2_1.c.obj
-
-.PHONY : ex1/dry/2_1.obj
-
-# target to build an object file
-ex1/dry/2_1.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/dry/2_1.c.obj
-.PHONY : ex1/dry/2_1.c.obj
-
-ex1/dry/2_1.i: ex1/dry/2_1.c.i
-
-.PHONY : ex1/dry/2_1.i
-
-# target to preprocess a source file
-ex1/dry/2_1.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/dry/2_1.c.i
-.PHONY : ex1/dry/2_1.c.i
-
-ex1/dry/2_1.s: ex1/dry/2_1.c.s
-
-.PHONY : ex1/dry/2_1.s
-
-# target to generate assembly for a file
-ex1/dry/2_1.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/dry/2_1.c.s
-.PHONY : ex1/dry/2_1.c.s
-
-ex1/dry/2_2.obj: ex1/dry/2_2.c.obj
-
-.PHONY : ex1/dry/2_2.obj
-
-# target to build an object file
-ex1/dry/2_2.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_2.dir\build.make CMakeFiles/2_2.dir/ex1/dry/2_2.c.obj
-.PHONY : ex1/dry/2_2.c.obj
-
-ex1/dry/2_2.i: ex1/dry/2_2.c.i
-
-.PHONY : ex1/dry/2_2.i
-
-# target to preprocess a source file
-ex1/dry/2_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_2.dir\build.make CMakeFiles/2_2.dir/ex1/dry/2_2.c.i
-.PHONY : ex1/dry/2_2.c.i
-
-ex1/dry/2_2.s: ex1/dry/2_2.c.s
-
-.PHONY : ex1/dry/2_2.s
-
-# target to generate assembly for a file
-ex1/dry/2_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_2.dir\build.make CMakeFiles/2_2.dir/ex1/dry/2_2.c.s
-.PHONY : ex1/dry/2_2.c.s
-
-ex1/set/amount_set.obj: ex1/set/amount_set.c.obj
-
-.PHONY : ex1/set/amount_set.obj
-
-# target to build an object file
-ex1/set/amount_set.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/amount_set.c.obj
-.PHONY : ex1/set/amount_set.c.obj
-
-ex1/set/amount_set.i: ex1/set/amount_set.c.i
-
-.PHONY : ex1/set/amount_set.i
-
-# target to preprocess a source file
-ex1/set/amount_set.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/amount_set.c.i
-.PHONY : ex1/set/amount_set.c.i
-
-ex1/set/amount_set.s: ex1/set/amount_set.c.s
-
-.PHONY : ex1/set/amount_set.s
-
-# target to generate assembly for a file
-ex1/set/amount_set.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/amount_set.c.s
-.PHONY : ex1/set/amount_set.c.s
-
-ex1/set/amount_set_str.obj: ex1/set/amount_set_str.c.obj
-
-.PHONY : ex1/set/amount_set_str.obj
-
-# target to build an object file
-ex1/set/amount_set_str.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/amount_set_str.c.obj
-.PHONY : ex1/set/amount_set_str.c.obj
-
-ex1/set/amount_set_str.i: ex1/set/amount_set_str.c.i
-
-.PHONY : ex1/set/amount_set_str.i
-
-# target to preprocess a source file
-ex1/set/amount_set_str.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/amount_set_str.c.i
-.PHONY : ex1/set/amount_set_str.c.i
-
-ex1/set/amount_set_str.s: ex1/set/amount_set_str.c.s
-
-.PHONY : ex1/set/amount_set_str.s
-
-# target to generate assembly for a file
-ex1/set/amount_set_str.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/amount_set_str.c.s
-.PHONY : ex1/set/amount_set_str.c.s
+matamikya/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/build
+.PHONY : matamikya/fast
 
 ex1/set/matamikya.obj: ex1/set/matamikya.c.obj
 
@@ -348,7 +147,7 @@ ex1/set/matamikya.obj: ex1/set/matamikya.c.obj
 
 # target to build an object file
 ex1/set/matamikya.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/matamikya.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/matamikya.c.obj
 .PHONY : ex1/set/matamikya.c.obj
 
 ex1/set/matamikya.i: ex1/set/matamikya.c.i
@@ -357,7 +156,7 @@ ex1/set/matamikya.i: ex1/set/matamikya.c.i
 
 # target to preprocess a source file
 ex1/set/matamikya.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/matamikya.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/matamikya.c.i
 .PHONY : ex1/set/matamikya.c.i
 
 ex1/set/matamikya.s: ex1/set/matamikya.c.s
@@ -366,7 +165,7 @@ ex1/set/matamikya.s: ex1/set/matamikya.c.s
 
 # target to generate assembly for a file
 ex1/set/matamikya.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/matamikya.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/matamikya.c.s
 .PHONY : ex1/set/matamikya.c.s
 
 ex1/set/matamikya_print.obj: ex1/set/matamikya_print.c.obj
@@ -375,7 +174,7 @@ ex1/set/matamikya_print.obj: ex1/set/matamikya_print.c.obj
 
 # target to build an object file
 ex1/set/matamikya_print.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/matamikya_print.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/matamikya_print.c.obj
 .PHONY : ex1/set/matamikya_print.c.obj
 
 ex1/set/matamikya_print.i: ex1/set/matamikya_print.c.i
@@ -384,7 +183,7 @@ ex1/set/matamikya_print.i: ex1/set/matamikya_print.c.i
 
 # target to preprocess a source file
 ex1/set/matamikya_print.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/matamikya_print.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/matamikya_print.c.i
 .PHONY : ex1/set/matamikya_print.c.i
 
 ex1/set/matamikya_print.s: ex1/set/matamikya_print.c.s
@@ -393,7 +192,7 @@ ex1/set/matamikya_print.s: ex1/set/matamikya_print.c.s
 
 # target to generate assembly for a file
 ex1/set/matamikya_print.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/matamikya_print.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/matamikya_print.c.s
 .PHONY : ex1/set/matamikya_print.c.s
 
 ex1/set/orders.obj: ex1/set/orders.c.obj
@@ -402,7 +201,7 @@ ex1/set/orders.obj: ex1/set/orders.c.obj
 
 # target to build an object file
 ex1/set/orders.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/orders.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/orders.c.obj
 .PHONY : ex1/set/orders.c.obj
 
 ex1/set/orders.i: ex1/set/orders.c.i
@@ -411,7 +210,7 @@ ex1/set/orders.i: ex1/set/orders.c.i
 
 # target to preprocess a source file
 ex1/set/orders.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/orders.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/orders.c.i
 .PHONY : ex1/set/orders.c.i
 
 ex1/set/orders.s: ex1/set/orders.c.s
@@ -420,7 +219,7 @@ ex1/set/orders.s: ex1/set/orders.c.s
 
 # target to generate assembly for a file
 ex1/set/orders.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/orders.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/orders.c.s
 .PHONY : ex1/set/orders.c.s
 
 ex1/set/product.obj: ex1/set/product.c.obj
@@ -429,7 +228,7 @@ ex1/set/product.obj: ex1/set/product.c.obj
 
 # target to build an object file
 ex1/set/product.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/product.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/product.c.obj
 .PHONY : ex1/set/product.c.obj
 
 ex1/set/product.i: ex1/set/product.c.i
@@ -438,7 +237,7 @@ ex1/set/product.i: ex1/set/product.c.i
 
 # target to preprocess a source file
 ex1/set/product.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/product.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/product.c.i
 .PHONY : ex1/set/product.c.i
 
 ex1/set/product.s: ex1/set/product.c.s
@@ -447,8 +246,62 @@ ex1/set/product.s: ex1/set/product.c.s
 
 # target to generate assembly for a file
 ex1/set/product.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\2_1.dir\build.make CMakeFiles/2_1.dir/ex1/set/product.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/product.c.s
 .PHONY : ex1/set/product.c.s
+
+ex1/set/tests/matamikya_main.obj: ex1/set/tests/matamikya_main.c.obj
+
+.PHONY : ex1/set/tests/matamikya_main.obj
+
+# target to build an object file
+ex1/set/tests/matamikya_main.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/tests/matamikya_main.c.obj
+.PHONY : ex1/set/tests/matamikya_main.c.obj
+
+ex1/set/tests/matamikya_main.i: ex1/set/tests/matamikya_main.c.i
+
+.PHONY : ex1/set/tests/matamikya_main.i
+
+# target to preprocess a source file
+ex1/set/tests/matamikya_main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/tests/matamikya_main.c.i
+.PHONY : ex1/set/tests/matamikya_main.c.i
+
+ex1/set/tests/matamikya_main.s: ex1/set/tests/matamikya_main.c.s
+
+.PHONY : ex1/set/tests/matamikya_main.s
+
+# target to generate assembly for a file
+ex1/set/tests/matamikya_main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/tests/matamikya_main.c.s
+.PHONY : ex1/set/tests/matamikya_main.c.s
+
+ex1/set/tests/matamikya_tests.obj: ex1/set/tests/matamikya_tests.c.obj
+
+.PHONY : ex1/set/tests/matamikya_tests.obj
+
+# target to build an object file
+ex1/set/tests/matamikya_tests.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/tests/matamikya_tests.c.obj
+.PHONY : ex1/set/tests/matamikya_tests.c.obj
+
+ex1/set/tests/matamikya_tests.i: ex1/set/tests/matamikya_tests.c.i
+
+.PHONY : ex1/set/tests/matamikya_tests.i
+
+# target to preprocess a source file
+ex1/set/tests/matamikya_tests.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/tests/matamikya_tests.c.i
+.PHONY : ex1/set/tests/matamikya_tests.c.i
+
+ex1/set/tests/matamikya_tests.s: ex1/set/tests/matamikya_tests.c.s
+
+.PHONY : ex1/set/tests/matamikya_tests.s
+
+# target to generate assembly for a file
+ex1/set/tests/matamikya_tests.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\matamikya.dir\build.make CMakeFiles/matamikya.dir/ex1/set/tests/matamikya_tests.c.s
+.PHONY : ex1/set/tests/matamikya_tests.c.s
 
 # Help Target
 help:
@@ -458,28 +311,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... 2_1
-	@echo ... 2_2
-	@echo ... mtm_buggy
-	@echo ... part1
-	@echo ... ex0/part1/part1.obj
-	@echo ... ex0/part1/part1.i
-	@echo ... ex0/part1/part1.s
-	@echo ... ex0/part2/mtm_buggy.obj
-	@echo ... ex0/part2/mtm_buggy.i
-	@echo ... ex0/part2/mtm_buggy.s
-	@echo ... ex1/dry/2_1.obj
-	@echo ... ex1/dry/2_1.i
-	@echo ... ex1/dry/2_1.s
-	@echo ... ex1/dry/2_2.obj
-	@echo ... ex1/dry/2_2.i
-	@echo ... ex1/dry/2_2.s
-	@echo ... ex1/set/amount_set.obj
-	@echo ... ex1/set/amount_set.i
-	@echo ... ex1/set/amount_set.s
-	@echo ... ex1/set/amount_set_str.obj
-	@echo ... ex1/set/amount_set_str.i
-	@echo ... ex1/set/amount_set_str.s
+	@echo ... matamikya
 	@echo ... ex1/set/matamikya.obj
 	@echo ... ex1/set/matamikya.i
 	@echo ... ex1/set/matamikya.s
@@ -492,6 +324,12 @@ help:
 	@echo ... ex1/set/product.obj
 	@echo ... ex1/set/product.i
 	@echo ... ex1/set/product.s
+	@echo ... ex1/set/tests/matamikya_main.obj
+	@echo ... ex1/set/tests/matamikya_main.i
+	@echo ... ex1/set/tests/matamikya_main.s
+	@echo ... ex1/set/tests/matamikya_tests.obj
+	@echo ... ex1/set/tests/matamikya_tests.i
+	@echo ... ex1/set/tests/matamikya_tests.s
 .PHONY : help
 
 

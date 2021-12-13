@@ -2,7 +2,6 @@
 #include "string.h"
 #include "stdlib.h"
 
-
 struct product_t {
 	char* name;
 	unsigned int productId;
@@ -33,22 +32,17 @@ void* copyProduct(void* element)
 	if (new_product == NULL) {
 		return NULL;
 	}
-
-	new_product->productData = product->copyData(product->productData);
-	if (new_product->productData == NULL) {
-		freeProduct(new_product);
-		return NULL;
-	}
 	return new_product;
 }
 
-void freeProduct(void* product)
+void freeProduct(void* element)
 {
-	if (product == NULL) {
+	if (element == NULL) {
 		return;
 	}
-	free(((Product) product)->name);
-	((Product) product)->freeData(((Product) product)->productData);
+	Product product = element;
+	free(product->name);
+	product->freeData(product->productData);
 	free(product);
 }
 
@@ -59,7 +53,14 @@ int compareProduct(void* first_product, void* second_product)
 	}
 	Product first_prod = first_product;
 	Product second_prod = second_product;
-	return first_prod->productId - second_prod->productId;
+	if (first_prod->productId == second_prod->productId) {
+		return 0;
+	}
+	if (first_prod->productId > second_prod->productId) {
+		return 1;
+	} else {
+		return -1;
+	}
 }
 
 Product creatProduct(const char* name,
@@ -71,7 +72,8 @@ Product creatProduct(const char* name,
 					 MtmFreeData freeData,
 					 MtmGetProductPrice getProductPrice)
 {
-	if (name == NULL) {
+	if (name == NULL || productData == NULL ||
+		copyData == NULL || freeData == NULL) {
 		return NULL;
 	}
 	Product new_product = malloc(sizeof(*new_product));
@@ -85,9 +87,13 @@ Product creatProduct(const char* name,
 	strcpy(new_product->name, name);
 	new_product->productId = productId;
 	new_product->amount = amount;
-	new_product->totalInCome=0;
+	new_product->totalInCome = 0;
 	new_product->amountType = amountType;
-	new_product->productData = productData;
+	new_product->productData = copyData(productData);
+	if (new_product->productData == NULL) {
+		freeProduct(new_product);
+		return NULL;
+	}
 	new_product->copyData = copyData;
 	new_product->freeData = freeData;
 	new_product->getProductPrice = getProductPrice;
@@ -122,7 +128,7 @@ unsigned int getProductID(Product product)
 MatamikyaAmountType getProductAmountType(Product product)
 {
 	if (product == NULL) {
-		return MATAMIKYA_NOTHING;
+		return -1;
 	}
 	return product->amountType;
 }
@@ -132,7 +138,7 @@ double getProductTotalPrice(Product product)
 	if (product == NULL) {
 		return 0;
 	}
-	return product->getProductPrice(product->productData,product->amount);
+	return product->getProductPrice(product->productData, product->amount);
 }
 
 double getProductPriceOneUnit(Product product)
@@ -140,26 +146,29 @@ double getProductPriceOneUnit(Product product)
 	if (product == NULL) {
 		return 0;
 	}
-	return product->getProductPrice(product->productData,1);
+	return product->getProductPrice(product->productData, 1);
 }
 
-double getProductAmount(Product product){
-	if (product==NULL){
+double getProductAmount(Product product)
+{
+	if (product == NULL) {
 		return 0;
 	}
 	return product->amount;
 }
 
-double getProductTotalInCome(Product product){
-   if (product==NULL){
-	   return 0;
-   }
-   return product->totalInCome;
+double getProductTotalInCome(Product product)
+{
+	if (product == NULL) {
+		return 0;
+	}
+	return product->totalInCome;
 }
 
-void setProductAmount(Product product, double amount){
-	if (product==NULL){
+void setProductAmount(Product product, double amount)
+{
+	if (product == NULL) {
 		return;
 	}
-	product->amount+=amount;
+	product->amount += amount;
 }

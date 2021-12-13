@@ -1,6 +1,3 @@
-C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/part1.dir
-C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/mtm_buggy.dir
-C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/2_1.dir
-C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/2_2.dir
+C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/matamikya.dir
 C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/CMakeFiles/rebuild_cache.dir

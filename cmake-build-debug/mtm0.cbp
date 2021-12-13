@@ -135,47 +135,47 @@
 					<DistClean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="2_2">
-				<Option output="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/2_2.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 2_2"/>
-					<CompileFile command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="2_2/fast">
-				<Option output="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/2_2.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 2_2/fast"/>
-					<CompileFile command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
 			<Target title="edit_cache">
 				<Option working_dir="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
 					<Build command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="set_test">
+				<Option output="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/set_test.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 set_test"/>
+					<CompileFile command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="set_test/fast">
+				<Option output="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/set_test.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/97250/CLionProjects/mtm0/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 set_test/fast"/>
 					<CompileFile command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="C:/PROGRA~1/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/97250/CLionProjects/mtm0/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -190,9 +190,6 @@
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/dry/2_1.c">
 			<Option target="2_1"/>
-		</Unit>
-		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/dry/2_2.c">
-			<Option target="2_2"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/amount_set.c">
 			<Option target="2_1"/>
@@ -211,30 +208,44 @@
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/matamikya.c">
 			<Option target="2_1"/>
+			<Option target="set_test"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/matamikya.h">
 			<Option target="2_1"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/matamikya_print.c">
 			<Option target="2_1"/>
+			<Option target="set_test"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/matamikya_print.h">
 			<Option target="2_1"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/orders.c">
 			<Option target="2_1"/>
+			<Option target="set_test"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/orders.h">
 			<Option target="2_1"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/product.c">
 			<Option target="2_1"/>
+			<Option target="set_test"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/product.h">
 			<Option target="2_1"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/set.h">
 			<Option target="2_1"/>
+			<Option target="set_test"/>
+		</Unit>
+		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/tests/matamikya_main.c">
+			<Option target="set_test"/>
+		</Unit>
+		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/tests/matamikya_tests.c">
+			<Option target="set_test"/>
+		</Unit>
+		<Unit filename="C:/Users/97250/CLionProjects/mtm0/ex1/set/tests/matamikya_tests.h">
+			<Option target="set_test"/>
 		</Unit>
 		<Unit filename="C:/Users/97250/CLionProjects/mtm0/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
