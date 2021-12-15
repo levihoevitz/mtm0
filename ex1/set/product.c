@@ -41,6 +41,7 @@ void freeProduct(void* element)
 		return;
 	}
 	Product product = element;
+	//printf("%s",product->name);
 	free(product->name);
 	product->freeData(product->productData);
 	free(product);
@@ -48,9 +49,9 @@ void freeProduct(void* element)
 
 int compareProduct(void* first_product, void* second_product)
 {
-	if (first_product == NULL || second_product == NULL) {
+	/*if (first_product == NULL || second_product == NULL) {
 		return 0;
-	}
+	}*/
 	Product first_prod = first_product;
 	Product second_prod = second_product;
 	if (first_prod->productId == second_prod->productId) {
@@ -165,10 +166,18 @@ double getProductTotalInCome(Product product)
 	return product->totalInCome;
 }
 
-void setProductAmount(Product product, double amount)
+void addProductAmount(Product product, double amount)
 {
 	if (product == NULL) {
 		return;
 	}
 	product->amount += amount;
+}
+
+void setProductAmount(Product product, double amount)
+{
+	if (product == NULL) {
+		return;
+	}
+	product->amount = amount;
 }

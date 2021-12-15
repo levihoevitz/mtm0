@@ -101,6 +101,16 @@ double getOrderProfits(Order order)
 	return total_profit_of_order;
 }
 
+bool addOrderProductByID(Order order, unsigned int productId)
+{
+	for (Product product = setGetFirst(order->products); product != NULL; product = setGetNext(order->products)) {
+		if (getProductID(product) == productId) {
+			if(setAdd(order->products, product)==SET_SUCCESS)
+			return true;
+		}
+	}
+	return false;
+}
 
 void removeOrderProductByID(Order order, unsigned int productId)
 {
